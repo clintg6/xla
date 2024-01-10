@@ -46,6 +46,14 @@ build:native_arch_posix --host_copt=-march=native
 
 build:mkl_open_source_only --define=tensorflow_mkldnn_contraction_kernel=1
 
+build:rocm --repo_env TF_NEED_ROCM=1
+build:rocm --crosstool_top=@local_config_rocm//crosstool:toolchain
+build:rocm --define=using_rocm=true --define=using_rocm_hipcc=true
+build:rocm --@xla//xla/python:enable_gpu=true
+build:rocm --define=xla_python_enable_gpu=true
+build:rocm --define=tensorflow_mkldnn_contraction_kernel=0
+build:rocm --action_env TF_ROCM_AMDGPU_TARGETS="gfx900,gfx906,gfx908,gfx90a,gfx1030"
+
 build:cuda --repo_env TF_NEED_CUDA=1
 # "sm" means we emit only cubin, which is forward compatible within a GPU generation.
 # "compute" means we emit both cubin and PTX, which is larger but also forward compatible to future GPU generations.

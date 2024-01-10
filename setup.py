@@ -22,6 +22,9 @@
 #   XLA_CUDA=0
 #     build the xla/xrt client with CUDA enabled
 #
+#   XLA_ROCM=0
+#     build the xla/xrt client with ROCM enabled
+#
 #   XLA_CPU_USE_ACL=0
 #     whether to use ACL
 #
@@ -281,6 +284,8 @@ class BuildBazelExtension(command.build_ext.build_ext):
     # Build configuration.
     if _check_env_flag('BAZEL_VERBOSE'):
       bazel_argv.append('-s')
+    if _check_env_flag('XLA_ROCM'):
+      bazel_argv.append('--config=rocm')
     if _check_env_flag('XLA_CUDA'):
       bazel_argv.append('--config=cuda')
     if _check_env_flag('XLA_CPU_USE_ACL'):
